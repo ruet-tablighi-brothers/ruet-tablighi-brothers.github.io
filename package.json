@@ -1,0 +1,57 @@
+{
+	"name": "ruet-tablighi-brothers",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"lint": "biome lint .",
+		"preview": "vite preview",
+		"prepare": "husky"
+	},
+	"dependencies": {
+		"@mantine/core": "^7.8.0",
+		"@mantine/dates": "^7.8.0",
+		"@mantine/hooks": "^7.8.0",
+		"@supabase-cache-helpers/postgrest-react-query": "^1.6.2",
+		"@supabase/auth-ui-react": "^0.4.7",
+		"@supabase/auth-ui-shared": "^0.1.8",
+		"@supabase/supabase-js": "^2.42.4",
+		"@tailwindcss/vite": "next",
+		"@tanstack/react-query": "^5.29.2",
+		"@tanstack/react-router": "^1.28.1",
+		"@tanstack/react-virtual": "^3.3.0",
+		"@tanstack/router-devtools": "^1.28.1",
+		"fuse.js": "^7.0.0",
+		"idb-keyval": "^6.2.1",
+		"jotai": "^2.8.0",
+		"match-sorter": "^6.3.4",
+		"million": "latest",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-icons": "^5.1.0",
+		"tailwindcss": "next"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.7.0",
+		"@tanstack/router-vite-plugin": "^1.26.21",
+		"@total-typescript/ts-reset": "^0.5.1",
+		"@types/react": "^18.2.78",
+		"@types/react-dom": "^18.2.25",
+		"@vitejs/plugin-react-swc": "^3.6.0",
+		"browserslist": "^4.23.0",
+		"husky": "^9.0.11",
+		"lint-staged": "^15.2.2",
+		"supabase": "^1.157.2",
+		"typescript": "^5.4.5",
+		"unocss": "^0.59.2",
+		"vite": "^5.2.8",
+		"vite-plugin-pwa": "^0.19.8",
+		"vite-plugin-svgr": "^4.2.0",
+		"vite-plugin-top-level-await": "^1.4.1"
+	},
+	"lint-staged": {
+		"*": "biome check --apply-unsafe"
+	}
+}
