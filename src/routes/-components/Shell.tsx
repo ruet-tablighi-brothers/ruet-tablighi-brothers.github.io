@@ -32,30 +32,42 @@ export function Shell({ children }: { children: ReactNode }) {
 		<AppShell
 			header={{ height: 60 }}
 			navbar={{
-				width: 300,
+				width: 480,
 				breakpoint: "sm",
 				collapsed: { mobile: !session || !opened, desktop: !session },
 			}}
 			padding="md"
 		>
-			<AppShell.Header className="flex items-center px-4">
+			<AppShell.Header className="flex items-center gap-4 px-4">
 				{session && (
+					<Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="md" />
+				)}
+				{session ? (
+					<img
+						src="/icon.svg"
+						width={32}
+						height={32}
+						alt=""
+						className="mr-auto"
+					/>
+				) : (
 					<>
-						<Burger
-							opened={opened}
-							onClick={toggle}
-							hiddenFrom="sm"
-							size="md"
-							className="mr-auto"
+						<img
+							src="/icon.svg"
+							width={32}
+							height={32}
+							alt=""
+							className="ml-auto"
 						/>
-						<RealtimeStatus />
+						<Logo className="mr-auto block h-8 w-auto max-w-full" />
 					</>
 				)}
+				{session && <RealtimeStatus />}
 			</AppShell.Header>
 
 			<AppShell.Navbar p="md" className="gap-4">
 				<AppShell.Section>
-					<Logo className="mx-auto block max-w-full" />
+					<Logo className="mx-auto block h-8 w-auto max-w-full" />
 				</AppShell.Section>
 				<AppShell.Section grow component={ScrollArea}>
 					{([["/", "Home", FaHome]] as const).map(([path, label, Icon]) => (
