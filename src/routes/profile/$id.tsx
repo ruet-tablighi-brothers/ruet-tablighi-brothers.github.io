@@ -46,8 +46,8 @@ function ProfilePage() {
 					</Table.Td>
 				</Table.Tr>
 				<Table.Tr>
-					<Table.Th>Days in tableegh</Table.Th>
-					<Table.Td>{profile.days_in_tableegh}</Table.Td>
+					<Table.Th>Days in tabligh</Table.Th>
+					<Table.Td>{profile.days_in_tabligh}</Table.Td>
 				</Table.Tr>
 				<Table.Tr>
 					<Table.Th>College</Table.Th>

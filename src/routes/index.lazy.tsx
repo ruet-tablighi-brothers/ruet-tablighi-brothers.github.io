@@ -70,11 +70,11 @@ function Index() {
 			!search
 				? items
 				: fuzzy
-				  ? // biome-ignore lint/style/noNonNullAssertion: <explanation>
-					  fuse!
+					? // biome-ignore lint/style/noNonNullAssertion: <explanation>
+						fuse!
 							.search(search)
 							.map((x) => x.item)
-				  : matchSorter(items, search, { keys }),
+					: matchSorter(items, search, { keys }),
 		[search, items, fuzzy, fuse],
 	)
 
@@ -172,14 +172,17 @@ function Index() {
 										params={{ id: x.id.toString(36) }}
 										className="flex items-center rounded-lg border p-2"
 									>
-										{x.full_name}
+										<span className="overflow-hidden text-ellipsis whitespace-nowrap">
+											{x.full_name}
+										</span>
 										<Badge
-											className="ml-auto"
+											className="ml-auto flex-shrink-0"
 											radius="sm"
 											variant="default"
 											size="xl"
 										>
-											{x.department} {x.series}
+											{x.department}{" "}
+											{(x.series % 100).toString().padStart(2, "0")}
 										</Badge>
 									</Link>
 								</li>
