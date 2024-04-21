@@ -32,8 +32,8 @@ export function Shell({ children }: { children: ReactNode }) {
 		<AppShell
 			header={{ height: 60 }}
 			navbar={{
-				width: 480,
-				breakpoint: "sm",
+				width: 360,
+				breakpoint: "md",
 				collapsed: { mobile: !session || !opened, desktop: !session },
 			}}
 			padding="md"
@@ -92,7 +92,7 @@ export function Shell({ children }: { children: ReactNode }) {
 				)}
 			</AppShell.Navbar>
 
-			<AppShell.Main>{children}</AppShell.Main>
+			<AppShell.Main className="break-words">{children}</AppShell.Main>
 		</AppShell>
 	)
 }
