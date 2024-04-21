@@ -8,7 +8,7 @@ import { AppShell, Burger, Button, ScrollArea } from "@mantine/core"
 import { useRouterState } from "@tanstack/react-router"
 import { clear } from "idb-keyval"
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
-import { type ReactNode, useEffect } from "react"
+import { type ReactNode, memo, useEffect } from "react"
 import { FaHome } from "react-icons/fa"
 import { RealtimeStatus } from "./RealtimeStatus"
 
@@ -16,17 +16,19 @@ const toggleAtom = atom(null, (get, set) => {
 	set(openedAtom, !get(openedAtom))
 })
 
-export function Shell({ children }: { children: ReactNode }) {
+export const Shell = memo(function Shell({
+	children,
+}: { children: ReactNode }) {
 	const [opened, setOpened] = useAtom(openedAtom)
 	const toggle = useSetAtom(toggleAtom)
 	const session = useAtomValue(sessionAtom)
-	const location = useRouterState({
-		select: (state) => state.location,
+	const pathname = useRouterState({
+		select: (state) => state.location.pathname,
 	})
 
 	useEffect(() => {
-		location && setOpened(false)
-	}, [location, setOpened])
+		pathname && setOpened(false)
+	}, [pathname, setOpened])
 
 	return (
 		<AppShell
@@ -95,4 +97,4 @@ export function Shell({ children }: { children: ReactNode }) {
 			<AppShell.Main className="break-words">{children}</AppShell.Main>
 		</AppShell>
 	)
-}
+})

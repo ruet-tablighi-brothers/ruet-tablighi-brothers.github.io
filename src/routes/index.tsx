@@ -8,17 +8,29 @@ import {
 	TextInput,
 } from "@mantine/core"
 import { YearPickerInput } from "@mantine/dates"
-import { Link, createLazyFileRoute } from "@tanstack/react-router"
+import { useDebouncedCallback } from "@mantine/hooks"
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useWindowVirtualizer } from "@tanstack/react-virtual"
 import Fuse from "fuse.js"
 import { useAtomValue } from "jotai"
 import { matchSorter } from "match-sorter"
-import { useMemo, useRef, useState } from "react"
+import { memo, useMemo, useRef, useState } from "react"
 import { FaEllipsisV, FaSearch } from "react-icons/fa"
 import { VscSearchFuzzy } from "react-icons/vsc"
+import { z } from "zod"
 
-export const Route = createLazyFileRoute("/")({
+const validateSearch = z.object({
+	search: z.string().catch(""),
+	fuzzy: z.boolean().catch(false),
+	deptFilter: z.string().array().catch([]),
+	seriesRange: z.tuple([z.number(), z.number()]).catch([0, 0]),
+})
+
+type S = z.infer<typeof validateSearch>
+
+export const Route = createFileRoute("/")({
 	component: Index,
+	validateSearch,
 })
 
 const keys = ["department", "email", "full_name", "phone", "series"]
@@ -39,13 +51,95 @@ const departments = [
 	"URP",
 ]
 
+const Filters = memo(function Filters() {
+	const { search, fuzzy, deptFilter, seriesRange } = Route.useSearch()
+	const [more, setMore] = useState(false)
+	const seriesAsDates = useMemo(
+		() => seriesRange.map((x) => (x ? new Date(`${x}`) : null)),
+		[seriesRange],
+	) as [Date | null, Date | null]
+	const navigate = useNavigate({ from: Route.fullPath })
+	const setSearch = <T extends keyof S>(key: T, value: S[T]) => {
+		navigate({ search: (prev) => ({ ...prev, [key]: value }) })
+	}
+	const setSearchDebounced = useDebouncedCallback(setSearch, 450)
+
+	return (
+		<div className="space-y-4">
+			<Group>
+				<TextInput
+					defaultValue={search}
+					key={search}
+					onChange={(event) => {
+						setSearchDebounced("search", event.currentTarget.value)
+					}}
+					leftSection={<FaSearch />}
+					className="flex-1"
+				/>
+				<ActionIcon
+					variant={fuzzy ? "filled" : "default"}
+					onClick={() => setSearch("fuzzy", !fuzzy)}
+					size="input-sm"
+				>
+					<VscSearchFuzzy size="1.2em" />
+				</ActionIcon>
+				<ActionIcon
+					variant={more ? "filled" : "default"}
+					onClick={() => setMore((x) => !x)}
+					size="input-sm"
+				>
+					<FaEllipsisV size="1.2em" />
+				</ActionIcon>
+			</Group>
+			{more && (
+				<Group>
+					<YearPickerInput
+						type="range"
+						placeholder="Series"
+						className="basis-full md:basis-32"
+						defaultValue={seriesAsDates}
+						key={JSON.stringify(seriesRange)}
+						clearable
+						allowSingleDateInRange
+						onChange={([from, to]) => {
+							if (!from === !to)
+								setSearch("seriesRange", [
+									from ? from.getFullYear() : 0,
+									to ? to.getFullYear() : 0,
+								])
+						}}
+						minDate={new Date("1964")}
+						maxDate={new Date()}
+						valueFormatter={({ date }) => {
+							if (Array.isArray(date)) {
+								const [a, b] = date.map((x) => x?.getFullYear())
+								if (a === undefined) return ""
+								if (b === undefined) return `${a} -`
+								if (a === b) return `${a}`
+								return `${a} - ${b}`
+							}
+							return ""
+						}}
+					/>
+					<MultiSelect
+						placeholder="Departments"
+						data={departments}
+						className="basis-full md:flex-1"
+						defaultValue={deptFilter}
+						key={deptFilter.length}
+						onChange={(value) => setSearch("deptFilter", value)}
+						searchable
+						clearable
+					/>
+				</Group>
+			)}
+		</div>
+	)
+})
+
 function Index() {
 	const profiles = useAtomValue(profilesAtom)
-	const [search, setSearch] = useState("")
-	const [fuzzy, setFuzzy] = useState(false)
-	const [more, setMore] = useState(false)
-	const [deptFilter, setDeptFilter] = useState<string[]>([])
-	const [series, setSeries] = useState<[Date | null, Date | null]>([null, null])
+	const { search, fuzzy, deptFilter, seriesRange: series } = Route.useSearch()
 
 	const listRef = useRef<HTMLDivElement | null>(null)
 
@@ -53,12 +147,9 @@ function Index() {
 		let items = profiles.slice().sort((a, b) => a.series - b.series)
 		if (deptFilter.length)
 			items = items.filter((x) => deptFilter.includes(x.department))
-		const [fromSeries, toSeries] = series
-		if (fromSeries && toSeries) {
-			const from = fromSeries.getFullYear()
-			const to = toSeries.getFullYear()
+		const [from, to] = series
+		if (from && to)
 			items = items.filter((x) => from <= x.series && x.series <= to)
-		}
 		return items
 	}, [profiles, deptFilter, series])
 	const fuse = useMemo(
@@ -87,60 +178,7 @@ function Index() {
 
 	return (
 		<div className="space-y-4">
-			<Group>
-				<TextInput
-					value={search}
-					onChange={(event) => setSearch(event.currentTarget.value)}
-					leftSection={<FaSearch />}
-					className="flex-1"
-				/>
-				<ActionIcon
-					variant={fuzzy ? "filled" : "default"}
-					onClick={() => setFuzzy((x) => !x)}
-					size="input-sm"
-				>
-					<VscSearchFuzzy size="1.2em" />
-				</ActionIcon>
-				<ActionIcon
-					variant={more ? "filled" : "default"}
-					onClick={() => setMore((x) => !x)}
-					size="input-sm"
-				>
-					<FaEllipsisV size="1.2em" />
-				</ActionIcon>
-			</Group>
-			{more && (
-				<Group>
-					<YearPickerInput
-						type="range"
-						placeholder="Series"
-						className="basis-full md:basis-32"
-						value={series}
-						clearable
-						allowSingleDateInRange
-						onChange={setSeries}
-						minDate={new Date("1964")}
-						maxDate={new Date()}
-						valueFormatter={({ date }) => {
-							if (Array.isArray(date)) {
-								const [a, b] = date.map((x) => x?.getFullYear())
-								if (a === undefined) return ""
-								if (b === undefined) return `${a} -`
-								if (a === b) return `${a}`
-								return `${a} - ${b}`
-							}
-							return ""
-						}}
-					/>
-					<MultiSelect
-						placeholder="Departments"
-						data={departments}
-						className="basis-full md:flex-1"
-						value={deptFilter}
-						onChange={setDeptFilter}
-					/>
-				</Group>
-			)}
+			<Filters />
 			{searchResults.length ? (
 				<div ref={listRef}>
 					<ul
@@ -201,8 +239,10 @@ function Index() {
 							No results found!
 							<br />
 							<Button
+								component={Link}
 								variant="subtle"
-								onClick={() => setFuzzy(true)}
+								from={Route.fullPath}
+								search={(prev: S) => ({ ...prev, fuzzy: true })}
 								leftSection={<VscSearchFuzzy size="1.2em" />}
 								mt="md"
 								size="lg"

@@ -5,6 +5,7 @@ import { Auth } from "@supabase/auth-ui-react"
 import { ThemeSupa } from "@supabase/auth-ui-shared"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Outlet, createRootRoute } from "@tanstack/react-router"
+import { ScrollRestoration } from "@tanstack/react-router"
 import { set } from "idb-keyval"
 import { useAtom } from "jotai"
 import { Suspense, useEffect } from "react"
@@ -47,6 +48,7 @@ export const Route = createRootRoute({
 			<MantineProvider theme={theme}>
 				<QueryClientProvider client={queryClient}>
 					<Sync>
+						<ScrollRestoration />
 						<Shell>
 							{!session ? (
 								<div className="mx-auto max-w-prose">
