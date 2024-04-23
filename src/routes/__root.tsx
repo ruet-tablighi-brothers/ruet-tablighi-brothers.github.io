@@ -9,6 +9,7 @@ import { ScrollRestoration } from "@tanstack/react-router"
 import { set } from "idb-keyval"
 import { useAtom } from "jotai"
 import { Suspense, useEffect } from "react"
+import { ReloadPrompt } from "./-components/ReloadPrompt"
 import { Shell } from "./-components/Shell"
 import { Sync } from "./-components/Sync"
 import { TanStackRouterDevtools } from "./-components/TanStackRouterDevtools"
@@ -47,8 +48,8 @@ export const Route = createRootRoute({
 		return (
 			<MantineProvider theme={theme}>
 				<QueryClientProvider client={queryClient}>
+					<ScrollRestoration />
 					<Sync>
-						<ScrollRestoration />
 						<Shell>
 							{!session ? (
 								<div className="mx-auto max-w-prose">
@@ -66,6 +67,7 @@ export const Route = createRootRoute({
 							</Suspense>
 						</Shell>
 					</Sync>
+					<ReloadPrompt />
 				</QueryClientProvider>
 			</MantineProvider>
 		)

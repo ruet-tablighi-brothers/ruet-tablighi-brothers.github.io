@@ -25,7 +25,7 @@ export default defineConfig({
 		UnoCSS(),
 		tailwindcss(),
 		VitePWA({
-			registerType: "autoUpdate",
+			registerType: "prompt",
 			includeAssets: ["favicon.ico", "apple-touch-icon.png"],
 			manifest: {
 				name: "RUET Tablighi Brothers",
