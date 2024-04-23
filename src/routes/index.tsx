@@ -14,7 +14,7 @@ import { useWindowVirtualizer } from "@tanstack/react-virtual"
 import Fuse from "fuse.js"
 import { useAtomValue } from "jotai"
 import { matchSorter } from "match-sorter"
-import { memo, useMemo, useRef, useState } from "react"
+import { memo, useEffect, useMemo, useRef, useState } from "react"
 import { FaEllipsisV, FaSearch } from "react-icons/fa"
 import { VscSearchFuzzy } from "react-icons/vsc"
 import { z } from "zod"
@@ -64,12 +64,17 @@ const Filters = memo(function Filters() {
 	}
 	const setSearchDebounced = useDebouncedCallback(setSearch, 450)
 
+	const searchRef = useRef<HTMLInputElement | null>(null)
+	useEffect(() => {
+		if (searchRef.current) searchRef.current.value = search
+	}, [search])
+
 	return (
 		<div className="space-y-4">
 			<Group>
 				<TextInput
 					defaultValue={search}
-					key={search}
+					ref={searchRef}
 					onChange={(event) => {
 						setSearchDebounced("search", event.currentTarget.value)
 					}}
@@ -204,17 +209,18 @@ function Index() {
 											virtualItem.start - virtualizer.options.scrollMargin
 										}px)`,
 									}}
+									className="group"
 								>
 									<Link
 										to="/profile/$id"
 										params={{ id: x.id.toString(36) }}
-										className="flex items-center rounded-lg border p-2"
+										className="flex items-center rounded-lg border p-2 group-odd:bg-slate-100"
 									>
 										<span className="overflow-hidden text-ellipsis whitespace-nowrap">
 											{x.full_name}
 										</span>
 										<Badge
-											className="ml-auto flex-shrink-0"
+											className="ml-auto flex-shrink-0 group-odd:bg-slate-100"
 											radius="sm"
 											variant="default"
 											size="xl"

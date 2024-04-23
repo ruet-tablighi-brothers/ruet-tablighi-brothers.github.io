@@ -1,5 +1,5 @@
 import { type Profile, profilesStore } from "@/store/profiles"
-import { Anchor, Badge, Title } from "@mantine/core"
+import { Anchor, Badge, Text, Timeline, Title } from "@mantine/core"
 import { createFileRoute } from "@tanstack/react-router"
 import { get } from "idb-keyval"
 import type { ComponentProps, ReactNode } from "react"
@@ -75,7 +75,30 @@ function ProfilePage() {
 						title="Career"
 						icon={FaBriefcase}
 						className="col-span-full"
-						data={profile.job.join(", ")}
+						data={
+							<Timeline
+								active={1}
+								bulletSize={24}
+								lineWidth={2}
+								className="mx-auto mt-4 max-w-fit"
+							>
+								{profile.job.map((job, i) => {
+									const [title, place] = job.split(",", 2).map((x) => x.trim())
+									return (
+										<Timeline.Item
+											// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+											key={i}
+											bullet={<FaBriefcase size={12} />}
+											title={title}
+										>
+											<Text c="dimmed" size="sm">
+												{place}
+											</Text>
+										</Timeline.Item>
+									)
+								})}
+							</Timeline>
+						}
 					/>
 				</dl>
 			</div>
