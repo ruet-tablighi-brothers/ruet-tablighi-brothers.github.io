@@ -1,15 +1,16 @@
 import Logo from "@/assets/logo.svg?react"
 import { NavLink } from "@/components/NavLink"
+import { cn } from "@/lib/cn"
 import { supabase } from "@/lib/supabase"
 import { profilesStore } from "@/store/profiles"
 import { authStore, sessionAtom } from "@/store/session"
 import { sidebarOpenedAtom as openedAtom } from "@/store/sidebar"
-import { AppShell, Burger, Button, ScrollArea } from "@mantine/core"
-import { useRouterState } from "@tanstack/react-router"
+import { ActionIcon, AppShell, Burger, Button, ScrollArea } from "@mantine/core"
+import { Link, useRouterState } from "@tanstack/react-router"
 import { clear } from "idb-keyval"
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
 import { type ReactNode, memo, useEffect } from "react"
-import { FaHome } from "react-icons/fa"
+import { FaHome, FaSearch } from "react-icons/fa"
 import { RealtimeStatus } from "./RealtimeStatus"
 
 const toggleAtom = atom(null, (get, set) => {
@@ -42,9 +43,17 @@ export const Shell = memo(function Shell({
 		>
 			<AppShell.Header className="flex items-center gap-4 px-4">
 				{session && (
-					<Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="md" />
+					<Burger opened={opened} onClick={toggle} hiddenFrom="md" size="md" />
 				)}
-				{session ? (
+				<Link
+					to="/"
+					// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+					search={{} as any}
+					className={cn(
+						"flex items-center gap-4",
+						session ? "mr-auto" : "mx-auto",
+					)}
+				>
 					<img
 						src="/icon.svg"
 						width={32}
@@ -52,19 +61,22 @@ export const Shell = memo(function Shell({
 						alt=""
 						className="mr-auto"
 					/>
-				) : (
+					{!session && <Logo className="mr-auto block h-8 w-auto max-w-full" />}
+				</Link>
+				{session && (
 					<>
-						<img
-							src="/icon.svg"
-							width={32}
-							height={32}
-							alt=""
-							className="ml-auto"
-						/>
-						<Logo className="mr-auto block h-8 w-auto max-w-full" />
+						<RealtimeStatus />
+						<ActionIcon
+							component={Link}
+							variant="subtle"
+							color="dark"
+							to="/search"
+							radius="lg"
+						>
+							<FaSearch />
+						</ActionIcon>
 					</>
 				)}
-				{session && <RealtimeStatus />}
 			</AppShell.Header>
 
 			<AppShell.Navbar p="md" className="gap-4">

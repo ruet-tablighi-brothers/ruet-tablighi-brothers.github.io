@@ -12,12 +12,24 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as SearchIndexImport } from './routes/search/index'
+import { Route as SearchResultsImport } from './routes/search/results'
 import { Route as ProfileIdImport } from './routes/profile/$id'
 
 // Create/Update Routes
 
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SearchIndexRoute = SearchIndexImport.update({
+  path: '/search/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SearchResultsRoute = SearchResultsImport.update({
+  path: '/search/results',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -38,11 +50,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileIdImport
       parentRoute: typeof rootRoute
     }
+    '/search/results': {
+      preLoaderRoute: typeof SearchResultsImport
+      parentRoute: typeof rootRoute
+    }
+    '/search/': {
+      preLoaderRoute: typeof SearchIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([IndexRoute, ProfileIdRoute])
+export const routeTree = rootRoute.addChildren([
+  IndexRoute,
+  ProfileIdRoute,
+  SearchResultsRoute,
+  SearchIndexRoute,
+])
 
 /* prettier-ignore-end */

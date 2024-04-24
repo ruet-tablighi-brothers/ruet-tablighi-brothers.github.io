@@ -1,3 +1,4 @@
+import { departments } from "@/lib/enums"
 import { profilesAtom } from "@/store/profiles"
 import {
 	ActionIcon,
@@ -34,22 +35,6 @@ export const Route = createFileRoute("/")({
 })
 
 const keys = ["department", "email", "full_name", "series"]
-const departments = [
-	"Arch.",
-	"BECM",
-	"CE",
-	"CFPE",
-	"CSE",
-	"ECE",
-	"EEE",
-	"ETE",
-	"GCE",
-	"IPE",
-	"ME",
-	"MSE",
-	"MTE",
-	"URP",
-]
 
 const Filters = memo(function Filters() {
 	const { search, fuzzy, deptFilter, seriesRange } = Route.useSearch()

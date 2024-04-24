@@ -1,0 +1,16 @@
+export const departments = [
+	"Arch.",
+	"BECM",
+	"CE",
+	"CFPE",
+	"CSE",
+	"ECE",
+	"EEE",
+	"ETE",
+	"GCE",
+	"IPE",
+	"ME",
+	"MSE",
+	"MTE",
+	"URP",
+]
