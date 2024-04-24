@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
 	validateSearch,
 })
 
-const keys = ["department", "email", "full_name", "phone", "series"]
+const keys = ["department", "email", "full_name", "series"]
 const departments = [
 	"Arch.",
 	"BECM",
@@ -79,6 +79,7 @@ const Filters = memo(function Filters() {
 						setSearchDebounced("search", event.currentTarget.value)
 					}}
 					leftSection={<FaSearch />}
+					placeholder="Search by name"
 					className="flex-1"
 				/>
 				<ActionIcon

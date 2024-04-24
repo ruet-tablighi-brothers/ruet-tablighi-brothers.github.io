@@ -11,7 +11,6 @@ import { useAtom } from "jotai"
 import { Suspense, useEffect } from "react"
 import { ReloadPrompt } from "./-components/ReloadPrompt"
 import { Shell } from "./-components/Shell"
-import { Sync } from "./-components/Sync"
 import { TanStackRouterDevtools } from "./-components/TanStackRouterDevtools"
 
 import "virtual:uno.css"
@@ -49,24 +48,22 @@ export const Route = createRootRoute({
 			<MantineProvider theme={theme}>
 				<QueryClientProvider client={queryClient}>
 					<ScrollRestoration />
-					<Sync>
-						<Shell>
-							{!session ? (
-								<div className="mx-auto max-w-prose">
-									<Auth
-										supabaseClient={supabase}
-										appearance={{ theme: ThemeSupa }}
-										providers={["google"]}
-									/>
-								</div>
-							) : (
-								<Outlet />
-							)}
-							<Suspense>
-								<TanStackRouterDevtools position="bottom-right" />
-							</Suspense>
-						</Shell>
-					</Sync>
+					<Shell>
+						{!session ? (
+							<div className="mx-auto max-w-prose">
+								<Auth
+									supabaseClient={supabase}
+									appearance={{ theme: ThemeSupa }}
+									providers={["google"]}
+								/>
+							</div>
+						) : (
+							<Outlet />
+						)}
+						<Suspense>
+							<TanStackRouterDevtools position="bottom-right" />
+						</Suspense>
+					</Shell>
 					<ReloadPrompt />
 				</QueryClientProvider>
 			</MantineProvider>

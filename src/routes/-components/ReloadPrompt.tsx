@@ -31,7 +31,14 @@ export function ReloadPrompt() {
 			</Text>
 			<Group>
 				{needRefresh && (
-					<Button onClick={() => updateServiceWorker(true)}>Update</Button>
+					<Button
+						onClick={async () => {
+							await updateServiceWorker(true)
+							close()
+						}}
+					>
+						Update
+					</Button>
 				)}
 				<Button onClick={close}>{offlineReady ? "OK" : "Cancel"}</Button>
 			</Group>

@@ -77,13 +77,20 @@ function ProfilePage() {
 						className="col-span-full"
 						data={
 							<Timeline
-								active={1}
+								active={0}
 								bulletSize={24}
 								lineWidth={2}
 								className="mx-auto mt-4 max-w-fit"
 							>
-								{profile.job.map((job, i) => {
-									const [title, place] = job.split(",", 2).map((x) => x.trim())
+								{profile.job.toReversed().map((job, i) => {
+									const j = job.indexOf(",")
+									let title = ""
+									let place = ""
+									if (j < 0) title = job
+									else {
+										title = job.slice(0, j).trim()
+										place = job.slice(j + 1).trim()
+									}
 									return (
 										<Timeline.Item
 											// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
@@ -120,7 +127,7 @@ function Item({
 } & ComponentProps<"div">) {
 	return (
 		<div {...props}>
-			<dt className="flex items-center justify-center gap-2 font-bold">
+			<dt className="flex items-center justify-center gap-2 bg-gray-200 font-bold">
 				{Icon && <Icon />} {title}
 			</dt>
 			<dd>{data ?? <FaQuestionCircle className="inline" />}</dd>
