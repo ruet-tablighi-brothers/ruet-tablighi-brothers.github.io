@@ -10,6 +10,7 @@ import { clear } from "idb-keyval"
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
 import { type ReactNode, memo, useEffect } from "react"
 import { FaHome, FaSearch } from "react-icons/fa"
+import { FaChartPie } from "react-icons/fa6"
 import { RealtimeStatus } from "./RealtimeStatus"
 
 const toggleAtom = atom(null, (get, set) => {
@@ -80,7 +81,12 @@ export const Shell = memo(function Shell({
 
 			<AppShell.Navbar p="md" className="gap-4">
 				<AppShell.Section grow component={ScrollArea}>
-					{([["/", "Home", FaHome]] as const).map(([path, label, Icon]) => (
+					{(
+						[
+							["/", "Home", FaHome],
+							["/summary", "Summary", FaChartPie],
+						] as const
+					).map(([path, label, Icon]) => (
 						<NavLink
 							key={path}
 							to={path}

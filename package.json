@@ -11,6 +11,7 @@
 		"prepare": "husky"
 	},
 	"dependencies": {
+		"@mantine/charts": "^7.9.0",
 		"@mantine/core": "^7.8.0",
 		"@mantine/dates": "^7.8.0",
 		"@mantine/hooks": "^7.8.0",
@@ -34,6 +35,7 @@
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-icons": "^5.1.0",
+		"recharts": "2",
 		"tailwind-merge": "^2.3.0",
 		"tailwindcss": "next",
 		"zod": "^3.22.5"

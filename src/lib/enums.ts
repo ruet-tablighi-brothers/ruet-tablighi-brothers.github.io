@@ -1,4 +1,6 @@
-export const departments = [
+import type { Enums } from "./supabase.types"
+
+export const departments: Enums<"department">[] = [
 	"Arch.",
 	"BECM",
 	"CE",
