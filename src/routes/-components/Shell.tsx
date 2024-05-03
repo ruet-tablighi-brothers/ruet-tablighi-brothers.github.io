@@ -1,4 +1,3 @@
-import Logo from "@/assets/logo.svg?react"
 import { NavLink } from "@/components/NavLink"
 import { cn } from "@/lib/cn"
 import { supabase } from "@/lib/supabase"
@@ -55,13 +54,13 @@ export const Shell = memo(function Shell({
 					)}
 				>
 					<img
-						src="/icon.svg"
+						src={`${import.meta.env.BASE_URL}icon.svg`}
 						width={32}
 						height={32}
 						alt=""
 						className="mr-auto"
 					/>
-					{!session && <Logo className="mr-auto block h-8 w-auto max-w-full" />}
+					<span className="font-medium text-xl">Rahabar</span>
 				</Link>
 				{session && (
 					<>
@@ -80,9 +79,6 @@ export const Shell = memo(function Shell({
 			</AppShell.Header>
 
 			<AppShell.Navbar p="md" className="gap-4">
-				<AppShell.Section>
-					<Logo className="mx-auto block h-8 w-auto max-w-full" />
-				</AppShell.Section>
 				<AppShell.Section grow component={ScrollArea}>
 					{([["/", "Home", FaHome]] as const).map(([path, label, Icon]) => (
 						<NavLink

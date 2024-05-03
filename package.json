@@ -57,6 +57,6 @@
 		"vite-plugin-top-level-await": "^1.4.1"
 	},
 	"lint-staged": {
-		"*": "biome check --apply-unsafe"
+		"*": "biome check --apply-unsafe --no-errors-on-unmatched"
 	}
 }

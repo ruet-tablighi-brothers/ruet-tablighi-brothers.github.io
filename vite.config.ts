@@ -28,9 +28,9 @@ export default defineConfig({
 			registerType: "prompt",
 			includeAssets: ["favicon.ico", "apple-touch-icon.png"],
 			manifest: {
-				name: "RUET Tablighi Brothers",
-				short_name: "RUET Tablighi Brothers",
-				description: "RUET Tablighi Brothers",
+				name: "Rahabar",
+				short_name: "Rahabar",
+				description: "Rahabar from RUET Tablighi Brothers",
 				theme_color: "#40c057",
 				icons: [
 					{

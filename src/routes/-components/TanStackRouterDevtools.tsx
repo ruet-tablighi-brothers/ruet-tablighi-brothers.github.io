@@ -10,4 +10,4 @@ export const TanStackRouterDevtools =
 					// For Embedded Mode
 					// default: res.TanStackRouterDevtoolsPanel
 				})),
-		  )
+			)
