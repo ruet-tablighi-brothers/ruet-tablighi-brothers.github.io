@@ -24,6 +24,7 @@
 		"@tanstack/react-router": "^1.29.2",
 		"@tanstack/react-virtual": "^3.4.0",
 		"@tanstack/router-devtools": "^1.29.2",
+		"@uiw/react-use-online": "^1.0.0",
 		"change-case": "^5.4.4",
 		"clsx": "^2.1.1",
 		"fuse.js": "^7.0.0",

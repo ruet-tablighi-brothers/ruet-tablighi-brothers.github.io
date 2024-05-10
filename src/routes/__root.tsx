@@ -6,6 +6,7 @@ import { ThemeSupa } from "@supabase/auth-ui-shared"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Outlet, createRootRoute } from "@tanstack/react-router"
 import { ScrollRestoration } from "@tanstack/react-router"
+import { useOnline } from "@uiw/react-use-online"
 import { set } from "idb-keyval"
 import { useAtom } from "jotai"
 import { Suspense, useEffect } from "react"
@@ -27,8 +28,10 @@ const theme = createTheme({
 export const Route = createRootRoute({
 	component: function Root() {
 		const [session, setSession] = useAtom(sessionAtom)
+		const isOnline = useOnline()
 
 		useEffect(() => {
+			if (!isOnline) return
 			supabase.auth.getSession().then(({ data: { session } }) => {
 				setSession(session)
 				if (session) set("session", session, authStore)
@@ -42,7 +45,7 @@ export const Route = createRootRoute({
 			})
 
 			return () => subscription.unsubscribe()
-		}, [setSession])
+		}, [isOnline, setSession])
 
 		return (
 			<MantineProvider theme={theme}>

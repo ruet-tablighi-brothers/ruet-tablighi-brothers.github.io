@@ -2,11 +2,18 @@ import { supabase } from "@/lib/supabase"
 import { profilesAtom, profilesStore } from "@/store/profiles"
 import { Badge, Loader } from "@mantine/core"
 import { useSubscription } from "@supabase-cache-helpers/postgrest-react-query"
+import { useOnline } from "@uiw/react-use-online"
 import { entries, setMany } from "idb-keyval"
 import { useSetAtom } from "jotai"
 import { useEffect, useState } from "react"
 
 export function RealtimeStatus() {
+	const isOnline = useOnline()
+
+	return isOnline ? <Sync /> : <Badge color="gray">Offline</Badge>
+}
+
+function Sync() {
 	const [loading, setLoading] = useState(true)
 	const setProfiles = useSetAtom(profilesAtom)
 
