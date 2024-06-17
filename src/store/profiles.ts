@@ -6,6 +6,11 @@ export type Profile = Tables<"profiles">
 
 export const profilesStore = createStore("rtb-profiles-store", "profiles")
 
-export const profilesAtom = atom<Profile[]>(
+const _profilesAtom = atom<Profile[]>(
 	(await entries(profilesStore)).map(([, x]) => x),
+)
+
+export const profilesAtom = atom(
+	(get) => get(_profilesAtom).toSorted((a, b) => a.series - b.series),
+	(_, set, profiles: Profile[]) => set(_profilesAtom, profiles),
 )

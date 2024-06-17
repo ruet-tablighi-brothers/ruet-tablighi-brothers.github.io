@@ -54,22 +54,37 @@ const ProfileIdRoute = ProfileIdImport.update({
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/profile/$id': {
+      id: '/profile/$id'
+      path: '/profile/$id'
+      fullPath: '/profile/$id'
       preLoaderRoute: typeof ProfileIdImport
       parentRoute: typeof rootRoute
     }
     '/search/results': {
+      id: '/search/results'
+      path: '/search/results'
+      fullPath: '/search/results'
       preLoaderRoute: typeof SearchResultsImport
       parentRoute: typeof rootRoute
     }
     '/search/': {
+      id: '/search/'
+      path: '/search'
+      fullPath: '/search'
       preLoaderRoute: typeof SearchIndexImport
       parentRoute: typeof rootRoute
     }
     '/summary/': {
+      id: '/summary/'
+      path: '/summary'
+      fullPath: '/summary'
       preLoaderRoute: typeof SummaryIndexLazyImport
       parentRoute: typeof rootRoute
     }
@@ -78,12 +93,44 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([
+export const routeTree = rootRoute.addChildren({
   IndexRoute,
   ProfileIdRoute,
   SearchResultsRoute,
   SearchIndexRoute,
   SummaryIndexLazyRoute,
-])
+})
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/profile/$id",
+        "/search/results",
+        "/search/",
+        "/summary/"
+      ]
+    },
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/profile/$id": {
+      "filePath": "profile/$id.tsx"
+    },
+    "/search/results": {
+      "filePath": "search/results.tsx"
+    },
+    "/search/": {
+      "filePath": "search/index.tsx"
+    },
+    "/summary/": {
+      "filePath": "summary/index.lazy.tsx"
+    }
+  }
+}
+ROUTE_MANIFEST_END */

@@ -135,7 +135,7 @@ function Index() {
 	const listRef = useRef<HTMLDivElement | null>(null)
 
 	const items = useMemo(() => {
-		let items = profiles.slice().sort((a, b) => a.series - b.series)
+		let items = profiles.slice()
 		if (deptFilter.length)
 			items = items.filter((x) => deptFilter.includes(x.department))
 		const [from, to] = series
@@ -234,7 +234,7 @@ function Index() {
 								component={Link}
 								variant="subtle"
 								from={Route.fullPath}
-								search={(prev: S) => ({ ...prev, fuzzy: true })}
+								search={(prev) => ({ ...prev, fuzzy: true })}
 								leftSection={<VscSearchFuzzy size="1.2em" />}
 								mt="md"
 								size="lg"
