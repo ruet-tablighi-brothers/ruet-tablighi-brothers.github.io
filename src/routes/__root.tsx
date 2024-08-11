@@ -1,8 +1,7 @@
+import { Auth } from "@/components/Auth"
 import { supabase } from "@/lib/supabase"
 import { authStore, sessionAtom } from "@/store/session"
 import { MantineProvider, createTheme } from "@mantine/core"
-import { Auth } from "@supabase/auth-ui-react"
-import { ThemeSupa } from "@supabase/auth-ui-shared"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Outlet, createRootRoute } from "@tanstack/react-router"
 import { ScrollRestoration } from "@tanstack/react-router"
@@ -54,11 +53,7 @@ export const Route = createRootRoute({
 					<Shell>
 						{!session ? (
 							<div className="mx-auto max-w-prose">
-								<Auth
-									supabaseClient={supabase}
-									appearance={{ theme: ThemeSupa }}
-									providers={["google"]}
-								/>
+								<Auth supabaseClient={supabase} providers={["google"]} />
 							</div>
 						) : (
 							<Outlet />
