@@ -95,17 +95,21 @@ const Filters = memo(function Filters() {
 						onChange={([from, to]) => {
 							if (!from === !to)
 								setSearch("seriesRange", [
-									from ? from.getFullYear() : 0,
-									to ? to.getFullYear() : 0,
+									from ? +from.split("-", 1)[0] : 0,
+									to ? +to.split("-", 1)[0] : 0,
 								])
 						}}
 						minDate={new Date("1964")}
 						maxDate={new Date()}
 						valueFormatter={({ date }) => {
 							if (Array.isArray(date)) {
-								const [a, b] = date.map((x) => x?.getFullYear())
-								if (a === undefined) return ""
-								if (b === undefined) return `${a} -`
+								const [a, b] = date.map((x) =>
+									x instanceof Date
+										? x.getFullYear()
+										: x && +x.split("-", 1)[0],
+								)
+								if (!a) return ""
+								if (!b) return `${a} -`
 								if (a === b) return `${a}`
 								return `${a} - ${b}`
 							}
@@ -234,7 +238,8 @@ function Index() {
 								component={Link}
 								variant="subtle"
 								from={Route.fullPath}
-								search={(prev) => ({ ...prev, fuzzy: true })}
+								// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+								search={((prev: S) => ({ ...prev, fuzzy: true })) as any}
 								leftSection={<VscSearchFuzzy size="1.2em" />}
 								mt="md"
 								size="lg"

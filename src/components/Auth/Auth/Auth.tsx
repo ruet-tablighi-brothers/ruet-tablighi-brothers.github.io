@@ -1,7 +1,7 @@
 import { createStitches, createTheme } from "@stitches/core"
 import { type I18nVariables, VIEWS, en, merge } from "@supabase/auth-ui-shared"
 import type React from "react"
-import { useEffect, useState } from "react"
+import { type ReactNode, useEffect, useState } from "react"
 import type { Auth as AuthProps } from "../types"
 import { UserContextProvider, useUser } from "./UserContext"
 import {
@@ -31,7 +31,7 @@ function Auth({
 	otpType = "email",
 	additionalData,
 	children,
-}: AuthProps): JSX.Element | null {
+}: AuthProps): ReactNode {
 	const passwordLimit = true
 	/**
 	 * Localization support
